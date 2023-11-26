@@ -1,0 +1,23 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore dist directory (compiled TypeScript)
+dist/
+
+# Ignore any files that are generated during the build
+*.js
+*.map
+
+# Ignore any logs or runtime data
+logs/
+*.log
+*.json
+
+# Ignore environment configuration files
+.env
+
+# Ignore Visual Studio Code configuration
+.vscode/
+
+# Ignore macOS system files
+.DS_Store
