@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <ProductList />
-
+    <MainLayout />
   </div>
 </template>
 
 <script>
-import ProductList from './components/ProductList.vue';
+import MainLayout from './components/MainLayout.vue';
 export default {
-  name: 'App',
-    components: {
-    ProductList
-}}
-</script>
+  components: {
+    MainLayout,
+  },
+};</script>
 

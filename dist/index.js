@@ -8,10 +8,14 @@ const product_schema_1 = require("./src/product/product.schema");
 const category_schema_1 = require("./src/category/category.schema");
 const category_route_1 = __importDefault(require("./src/category/category.route"));
 const product_route_1 = __importDefault(require("./src/product/product.route"));
+const cors_1 = __importDefault(require("@fastify/cors"));
 const server = (0, fastify_1.default)({ logger: true });
 server.get('/', async (request, reply) => {
     return 'data';
 });
+server.register(cors_1.default, { origin: 'http://localhost:8081' });
+// server.register(require('fastify-multipart'));
+server.register(require('@fastify/multipart'));
 async function main() {
     for (const schema of [...product_schema_1.productSchema, ...category_schema_1.categorySchema]) {
         server.addSchema(schema);

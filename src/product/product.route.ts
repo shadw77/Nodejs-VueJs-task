@@ -7,10 +7,13 @@ import {
   deleteProductHandler,
 } from "./product.controller";
 import { $ref } from "./product.schema";
-
+const multer = require('multer');
+const upload = multer({dest:'uploads'});
 async function productRoutes(server: FastifyInstance) {
+
+  
   server.post(
-    "/",
+    "/", 
     {
       schema: {
         body: $ref("createProductSchema"),
