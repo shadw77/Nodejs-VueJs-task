@@ -85,6 +85,8 @@ export default {
         .put(`http://localhost:3002/api/products/${this.product.id}`, formData)
         .then((response) => {
           console.log(response.data);
+          this.$router.push("/");
+
         })
         .catch((error) => {
           console.error(error);

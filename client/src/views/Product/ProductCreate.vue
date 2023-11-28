@@ -72,6 +72,8 @@ export default {
         .post(`http://localhost:3002/api/products/`, formData)
         .then((response) => {
           console.log(response.data);
+          this.$router.push("/");
+
         })
         .catch((error) => {
           console.error(error);

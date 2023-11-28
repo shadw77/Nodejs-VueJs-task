@@ -66,12 +66,14 @@ export default {
     createCategory() {
       const formData = new FormData();
       formData.append("name", this.category.name);
-      formData.append("category_id", this.category.parent_id);
+      formData.append("parent_id", this.category.parent_id);
       formData.append("picture", this.picture);
       axios
         .post(`http://localhost:3002/api/categories/`, formData)
         .then((response) => {
           console.log(response.data);
+          this.$router.push("/categories");
+
         })
         .catch((error) => {
           console.error(error);

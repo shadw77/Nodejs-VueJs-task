@@ -1,10 +1,10 @@
-<!-- ProductList.vue -->
+<!-- CategoryList.vue -->
 
 <template id="app">
   <h2  class="mx-5 mb-3">All Categories</h2>
 
-  <div  class="mx-5 "><button @click="createProduct()" class="btn btn-info mb-4">
-        Create Product
+  <div  class="mx-5 "><button @click="createCategory()" class="btn btn-info mb-4">
+        Create Category
       </button>
     <div class="container-fluid text-center">
       

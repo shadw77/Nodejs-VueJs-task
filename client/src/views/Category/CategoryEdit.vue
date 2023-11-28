@@ -39,7 +39,6 @@
                 required
               />
             </div>
-
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
         </div>
@@ -56,7 +55,7 @@ export default {
     return {
       category: {
         name: "",
-        category_id: "",
+        parent_id: "",
       },
       picture: null,
     };
@@ -67,7 +66,7 @@ export default {
 
     // Fetch the category details using the id
     axios
-      .get(`http://localhost:3002/api/categorys/${categoryId}`)
+      .get(`http://localhost:3002/api/categories/${categoryId}`)
       .then((response) => {
         this.category = response.data;
       })
@@ -79,12 +78,13 @@ export default {
     updateCategory() {
       const formData = new FormData();
       formData.append("name", this.category.name);
-      formData.append("category_id", this.category.category_id);
+      formData.append("parent_id", this.category.parent_id);
       formData.append("picture", this.picture);
       axios
         .put(`http://localhost:3002/api/categories/${this.category.id}`, formData)
         .then((response) => {
           console.log(response.data);
+          this.$router.push("/categories");
         })
         .catch((error) => {
           console.error(error);
