@@ -8,10 +8,8 @@ import {
 } from "./product.controller";
 import { $ref } from "./product.schema";
 import multer from "fastify-multer";
-  const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/" });
 
-// const multer = require('multer');
-// const upload = multer({dest:'uploads'});
 async function productRoutes(server: FastifyInstance) {
 
     server.post(

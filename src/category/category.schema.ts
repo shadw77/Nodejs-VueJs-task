@@ -9,9 +9,7 @@ const categoryInput = {
     required_error: "Name is required",
     invalid_type_error: "Name must be a string",
   }),
-  picture: z.string({
-    invalid_type_error: "Picture must be a string",
-  }),
+  picture: z.string(),
   parent_id: z.number(),
 };
 
