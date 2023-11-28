@@ -7,12 +7,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 interface CustomFastifyRequest extends FastifyRequest {
   file: () => Promise<{ file: Buffer; name: string }>;
 }
-// export async function createProduct(input:createProductInput) {
-//     const product = await prisma.product.create({
-//         data: input,
-//     });
-//     return product;
-// }
+
 async function saveImage(file: any) {
   const { buffer, originalname } = file;
   const filePath = `uploads/${originalname}`;
@@ -91,14 +86,23 @@ export async function getProductById(productId: number) {
 
 export async function updateProduct(
   productId: number,
-  input: createProductInput
+  input: createProductInput,
+  file: any
+
 ) {
-  return prisma.product.update({
+  const filePath = await saveImage(file);
+  const product = await prisma.product.update({
     where: {
       id: productId,
     },
-    data: input,
+    data: {
+      name: input.name,
+      category_id: input.category_id,
+      picture: filePath,
+    },
   });
+  return product;
+
 }
 
 export async function deleteProduct(productId: number) {

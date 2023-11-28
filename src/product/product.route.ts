@@ -14,21 +14,7 @@ import multer from "fastify-multer";
 // const upload = multer({dest:'uploads'});
 async function productRoutes(server: FastifyInstance) {
 
-  
-  // server.post(
-  //   "/",
-  //   {
-  //     preHandler: upload.single("picture"),
-  //     schema: {
-  //       body: $ref("createProductSchema"),
-  //       response: {
-  //         201: $ref("productResponseSchema"),
-  //       },
-  //     },
-  //   },
-  //   createProductHandler as RouteHandlerMethod
-  // );
-  server.post(
+    server.post(
     "/",
     {
       preValidation: multer({
@@ -76,13 +62,29 @@ async function productRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
+      preValidation: multer({
+        limits: {
+          // fileSize: 300 * 300,
+        },
+        storage: multer.memoryStorage(),
+      }).single("picture"), 
+
       schema: {
+        consumes: ["multipart/form-data"],
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            category_id: { type: "number" },
+          },
+          required: ["name", "category_id"],
+        },
+
         params: { id: { type: "integer" } },
-        body: $ref("createProductSchema"),
         response: { 200: $ref("productResponseSchema") },
       },
     },
-    updateProductHandler
+    updateProductHandler as RouteHandlerMethod
   );
 
   server.delete(

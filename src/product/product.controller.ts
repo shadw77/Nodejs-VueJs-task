@@ -71,9 +71,15 @@ export async function updateProductHandler(
   }>,
   reply: FastifyReply
 ) {
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
   const productId = Number(request.params.id);
 
-  const product = await updateProduct(productId, request.body);
+  const product = await updateProduct(productId, request.body,file);
   reply.send(product);
 }
 

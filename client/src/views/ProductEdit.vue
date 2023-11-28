@@ -8,7 +8,7 @@
       </div>
       <div>
         <div>
-          <form @submit.prevent="updateProduct" enctype="multipart/form-data">
+          <form @submit.prevent="updateProduct()" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
               <input
