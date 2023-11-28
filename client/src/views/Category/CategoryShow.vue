@@ -66,7 +66,9 @@
                 <CategoryTree :categories="category.ChildCategories" />
               </blockquote>
             </div>
-          </div>
+          </div>                
+          <footer class="blockquote-footer">Count of products of recursive children categories:({{ getTotalProductCount(category) }})</footer>
+
         </div>
       </div>
     </div>
@@ -114,7 +116,29 @@ export default {
           console.error(error);
         });
     },
+
+getTotalProductCount(category) {
+  if (!category || Object.keys(category).length === 0) {
+    return 0;
+  }
+
+  let totalCount = 0;
+
+  if (category.products && category.products.length > 0) {
+    totalCount += category.products.length;
+  }
+
+  if (category.ChildCategories && category.ChildCategories.length > 0) {
+    totalCount += category.ChildCategories.reduce(
+      (sum, childCategory) => sum + this.getTotalProductCount(childCategory),
+      0
+    );
+  }
+
+  return totalCount;
+},
   },
+ 
 };
 </script>
 
