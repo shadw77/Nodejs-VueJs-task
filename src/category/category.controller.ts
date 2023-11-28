@@ -57,8 +57,21 @@ export async function getCategoryHandler(
   const categoryId = Number(request.params.id);
   const category = await getCategoryById(categoryId);
 
+  
   if (category) {
-    reply.send(category);
+    reply.send({
+      id: category.id,
+      name: category.name,
+      picture: category.picture,
+      parent_id: category.parent_id,
+      created_at :category.created_at,
+      updated_at: category.updated_at,
+      ChildCategories: category.ChildCategories,
+      products: category.products,
+
+    });
+ 
+ 
   } else {
     reply.status(404).send({ message: "Category not found" });
   }

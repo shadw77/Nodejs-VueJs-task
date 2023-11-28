@@ -9,7 +9,7 @@ import CategoriesList from "./views/Category/CategoriesList.vue";
 import CategoryShow from "./views/Category/CategoryShow.vue";
 import CategoryEdit from "./views/Category/CategoryEdit.vue";
 import CategoryCreate from "./views/Category/CategoryCreate.vue";
-
+import ProductForm from "./views/Product/ProductForm.vue";
 const routes = [
   {
     path: "/",
@@ -53,6 +53,11 @@ const routes = [
     path: "/create-category",
     name: "create-category",
     component: CategoryCreate,
+  },
+  {
+    path: "/form",
+    name: "form",
+    component: ProductForm,
   },
 ];
 

@@ -38,7 +38,7 @@ export async function createCategory(
   const category = await prisma.category.create({
     data: {
       name: input.name,
-      parent_id: input.parent_id,
+      parent_id: (typeof input.parent_id === "number" || input.parent_id === null) ? input.parent_id : (input.parent_id !== undefined ? parseInt(input.parent_id) : undefined),      
       picture: filePath,
     },
   });
@@ -54,24 +54,37 @@ export function getCategories() {
       parent_id: true,
       created_at: true,
       updated_at: true,
+      products:true,
+      ChildCategories: true,
+
     },
   });
 }
 
 export async function getCategoryById(categoryId: number) {
-  return prisma.category.findUnique({
-    where: {
-      id: categoryId,
-    },
-    select: {
-      id: true,
-      name: true,
-      picture: true,
-      parent_id: true,
-      created_at: true,
-      updated_at: true,
-    },
-  });
+
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
+      
+      include: {
+        ChildCategories: {
+          include: {
+            ChildCategories: true,
+            products: true,
+
+          },
+        },
+        products: true,
+      },
+    });
+
+    return category;
+  } catch (error) {
+    // Handle errors appropriately
+    console.error('Error fetching category by ID:', error);
+    throw new Error('Error fetching category by ID');
+  }
 }
 
 export async function updateCategory(

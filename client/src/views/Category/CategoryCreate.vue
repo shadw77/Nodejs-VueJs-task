@@ -36,7 +36,7 @@
                 class="form-control"
                 id="parent_id"
                 v-model="category.parent_id"
-                required
+                
               />
             </div>
 
@@ -66,7 +66,13 @@ export default {
     createCategory() {
       const formData = new FormData();
       formData.append("name", this.category.name);
-      formData.append("parent_id", this.category.parent_id);
+if (this.category.parent_id !== null && this.category.parent_id !== "") {
+  formData.append("parent_id", this.category.parent_id);
+} else {
+  formData.append("parent_id", null);
+}
+
+
       formData.append("picture", this.picture);
       axios
         .post(`http://localhost:3002/api/categories/`, formData)

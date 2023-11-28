@@ -24,18 +24,74 @@
       </div>
     </div>
   </div>
+  <div>
+    <div v-if="category.products?.length > 0">
+      <h3>
+        Products of
+        <span style="color: red; font-weight: bold"> {{ category.name }}</span>
+        category
+      </h3>
+    </div>
+    <div v-if="category" class="mt-5">
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div v-for="product in category.products" :key="product.id" class="col">
+          <div class="card">
+            <img
+              :src="`http://localhost:3002/${product.picture}`"
+              alt="Product Image"
+              class="card-img-top"
+              width="200"
+              height="200"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="category.ChildCategories?.length > 0">
+        <!-- Display child categories using CategoryTree component -->
+        <div class="card">
+          <div class="card-header">Child Categories</div>
+
+          <div
+            v-for="category in category.ChildCategories"
+            :key="category.id"
+            class="col"
+          >
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>{{ category.name }}</p>
+                <CategoryTree :categories="category.ChildCategories" />
+              </blockquote>
+            </div>
+          </div>                
+          <footer class="blockquote-footer">Count of products of recursive children categories:({{ getTotalProductCount(category) }})</footer>
+
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <p>Loading...</p>
+    </div>
+  </div>
 </template>
 
 <script>
+import CategoryTree from "./CategoryTree.vue";
 import axios from "axios";
-
 export default {
+  components: { CategoryTree },
+
   props: {
     id: {
       type: [Number, String],
       required: true,
     },
+    categories: Array, // Assuming an array of categories is passed as a prop
   },
+
   data() {
     return {
       category: {},
@@ -54,13 +110,35 @@ export default {
         .get("http://localhost:3002/api/categories/" + categoryId)
         .then((response) => {
           this.category = response.data;
-          console.log(this.category);
+          console.log("hiiiii", this.category);
         })
         .catch((error) => {
           console.error(error);
         });
     },
+
+getTotalProductCount(category) {
+  if (!category || Object.keys(category).length === 0) {
+    return 0;
+  }
+
+  let totalCount = 0;
+
+  if (category.products && category.products.length > 0) {
+    totalCount += category.products.length;
+  }
+
+  if (category.ChildCategories && category.ChildCategories.length > 0) {
+    totalCount += category.ChildCategories.reduce(
+      (sum, childCategory) => sum + this.getTotalProductCount(childCategory),
+      0
+    );
+  }
+
+  return totalCount;
+},
   },
+ 
 };
 </script>
 
@@ -99,11 +177,9 @@ export default {
   &:hover {
     transform: scale(1.03);
   }
-
 }
-img{
+img {
   object-fit: cover;
-  
 }
 
 .category-info {
