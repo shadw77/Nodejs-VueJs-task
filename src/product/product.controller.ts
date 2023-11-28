@@ -8,16 +8,40 @@ import {
   updateProduct,
   deleteProduct,
 } from "./product.service";
+import multer from "fastify-multer";
+import sharp from "sharp";
+import fs from "fs/promises";
+
+
+// Define the request interface with the updated file property
+interface CustomFastifyRequest extends FastifyRequest {
+  file: { buffer: Buffer; name: string };
+}
+
+// Define the multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the folder where the images will be saved
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Use the original filename for the saved image
+  },
+});
+
+const upload = multer({ storage: storage });
 
 export async function createProductHandler(
-  request: FastifyRequest<{
-    Body: createProductInput;
-  }>,
+  request: FastifyRequest<{ Body: createProductInput }>,
   reply: FastifyReply
 ) {
-  const product = await createProduct({
-    ...request.body,
-  });
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
+
+  const product = await createProduct(request.body, reply,file);
   return product;
 }
 
@@ -47,16 +71,15 @@ export async function updateProductHandler(
   }>,
   reply: FastifyReply
 ) {
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
   const productId = Number(request.params.id);
 
-  // try {
-  //     request.zod.validate(request.body, "createProductSchema");
-  // } catch (error) {
-  //     reply.status(400).send(error);
-  //     return;
-  // }
-
-  const product = await updateProduct(productId, request.body);
+  const product = await updateProduct(productId, request.body,file);
   reply.send(product);
 }
 

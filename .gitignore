@@ -5,13 +5,13 @@ node_modules/
 dist/
 
 # Ignore any files that are generated during the build
-*.js
+# *.js
 *.map
 
 # Ignore any logs or runtime data
 logs/
-*.log
-*.json
+# *.log
+# *.json
 
 # Ignore environment configuration files
 .env
@@ -21,3 +21,4 @@ logs/
 
 # Ignore macOS system files
 .DS_Store
+uploads/

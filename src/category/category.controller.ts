@@ -8,6 +8,25 @@ import {
   updateCategory,
   deleteCategory,
 } from "./category.service";
+import multer from "fastify-multer";
+import sharp from "sharp";
+import fs from "fs/promises";
+
+// Define the request interface with the updated file property
+interface CustomFastifyRequest extends FastifyRequest {
+  file: { buffer: Buffer; name: string };
+}
+
+// Define the multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the folder where the images will be saved
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Use the original filename for the saved image
+  },
+});
+const upload = multer({ storage: storage });
 
 export async function createCategoryHandler(
   request: FastifyRequest<{
@@ -15,9 +34,14 @@ export async function createCategoryHandler(
   }>,
   reply: FastifyReply
 ) {
-  const category = await createCategory({
-    ...request.body,
-  });
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
+
+  const category = await createCategory(request.body, reply,file);
   return category;
 }
 
@@ -47,16 +71,16 @@ export async function updateCategoryHandler(
   }>,
   reply: FastifyReply
 ) {
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
+
   const categoryId = Number(request.params.id);
 
-  // try {
-  //     request.zod.validate(request.body, "createCategorySchema");
-  // } catch (error) {
-  //     reply.status(400).send(error);
-  //     return;
-  // }
-
-  const categoy = await updateCategory(categoryId, request.body);
+  const categoy = await updateCategory(categoryId, request.body,file);
   reply.send(categoy);
 }
 

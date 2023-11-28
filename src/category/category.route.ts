@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, RouteHandlerMethod } from "fastify";
 import {
   createCategoryHandler,
   getCategoriesHandler,
@@ -7,19 +7,36 @@ import {
   deleteCategoryHandler,
 } from "./category.controller";
 import { $ref } from "./category.schema";
+import multer from "fastify-multer";
+const upload = multer({ dest: "uploads/" });
 
 async function categoryRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
+      preValidation: multer({
+        limits: {
+          // fileSize: 300 * 300,
+        },
+        storage: multer.memoryStorage(),
+      }).single("picture"), 
+
       schema: {
-        body: $ref("createCategorySchema"),
+        consumes: ["multipart/form-data"],
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            parent_id: { type: "number" },
+          },
+          required: ["name", "parent_id"],
+        },
         response: {
           201: $ref("categoryResponseSchema"),
         },
       },
     },
-    createCategoryHandler
+    createCategoryHandler  as RouteHandlerMethod
   );
 
   server.get(
@@ -43,13 +60,29 @@ async function categoryRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
+      preValidation: multer({
+        limits: {
+          // fileSize: 300 * 300,
+        },
+        storage: multer.memoryStorage(),
+      }).single("picture"), 
+
       schema: {
+        consumes: ["multipart/form-data"],
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            parent_id: { type: "number" },
+          },
+          required: ["name", "parent_id"],
+        },
+
         params: { id: { type: "integer" } },
-        body: $ref("createCategorySchema"),
         response: { 200: $ref("categoryResponseSchema") },
       },
     },
-    updateCategoryHandler
+    updateCategoryHandler as RouteHandlerMethod
   );
 
   server.delete(
