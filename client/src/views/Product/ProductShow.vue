@@ -10,14 +10,16 @@
     <div class="box">
       <div class="product-img">
         <img
-          :src="`${product.picture}`"
-          class="col col-3"
+          :src="`http://localhost:3002/${product.picture}`"
+          class="col col-5"
           alt="Product Image"
+          width:700
+          height:700
         />
       </div>
       <div class="product-info">
         <h1>{{ product.name }}</h1>
-       <h3> Category Id:{{product.category_id}}</h3>
+        <h3>Category Id:{{ product.category_id }}</h3>
         <br /><br />
       </div>
     </div>
@@ -97,6 +99,11 @@ export default {
   &:hover {
     transform: scale(1.03);
   }
+
+}
+img{
+  object-fit: cover;
+  
 }
 
 .product-info {
@@ -112,6 +119,4 @@ h1 {
   color: #333;
   font-family: "Archivo Black", sans-serif;
 }
-
-
 </style>

@@ -1,13 +1,13 @@
 <!-- ProductList.vue -->
 
 <template id="app">
-  <h2>All Products</h2>
+  <h2  class="mx-5 mb-3">All Products</h2>
 
-  <div>
-    <div class="container-fluid">
-      <button @click="createProduct()" class="btn btn-info">
+  <div  class="mx-5 "><button @click="createProduct()" class="btn btn-info mb-4">
         Create Product
       </button>
+    <div class="container-fluid text-center">
+      
       <table class="table bg-white rounded shadow-sm table-hover">
         <thead>
           <tr>
@@ -22,13 +22,17 @@
           <tr v-for="product in products" class="" :key="product.id">
             <th scope="row">{{ product.id }}</th>
             <td>{{ product.name }}</td>
-<img   :src="`http://localhost:3002/${product.picture}`" alt="Product Image" class="col col-3" />
+            <img
+              :src="`http://localhost:3002/${product.picture}`"
+              alt="Product Image"
+              class="col col-3"
+            />
             <td>{{ product.category_id }}</td>
-            <td>
+            <td class="col col-3">
               <button
                 @click="showProduct(product.id)"
                 type="button"
-                class="btn btn-outline-info btn-sm mx-1"
+                class="btn btn-outline-info  mx-1 "
               >
                 Show
               </button>
@@ -36,14 +40,14 @@
               <button
                 @click="editProduct(product.id)"
                 type="button"
-                class="btn btn-outline-warning btn-sm mx-1"
+                class="btn btn-outline-warning  mx-1"
               >
                 Edit
               </button>
               <button
                 @click="deleteProduct(product.id)"
                 type="button"
-                class="btn btn-outline-danger btn-sm mx-1"
+                class="btn btn-outline-danger  mx-1"
               >
                 Delete
               </button>
@@ -79,15 +83,14 @@ export default {
           console.error(error);
         });
     },
-  
+
     showProduct(productId) {
       this.$router.push({ name: "show", params: { id: productId } });
       console.log(`Show product with ID: ${productId}`);
     },
-    createProduct(){
+    createProduct() {
       this.$router.push({ name: "create" });
       console.log(`Create Product`);
-
     },
     editProduct(productId) {
       this.$router.push({ name: "edit", params: { id: productId } });
@@ -106,7 +109,7 @@ export default {
             console.error(error);
           });
       }
-    },    
+    },
   },
 };
 </script>
@@ -114,6 +117,6 @@ export default {
 <style>
 #app {
   font-family: "lato", sans-serif;
-  margin-top:200px;
+  margin-top: 200px;
 }
 </style>
