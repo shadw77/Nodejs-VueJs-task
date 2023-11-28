@@ -24,6 +24,21 @@
       </div>
     </div>
   </div>
+  <div>
+      <div v-if="category">
+      <h2>{{ category.name }}</h2>
+      <ul>
+        <li v-for="product in category.products" :key="product.id">{{ product.name }}</li>
+      </ul>
+      <div v-if="category.ChildCategories?.length > 0">
+        <h3>Child Categories</h3>
+        <CategoryTree :categories="category.ChildCategories" />
+      </div>
+    </div>
+    <div v-else>
+      <p>Loading...</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -31,11 +46,29 @@ import axios from "axios";
 
 export default {
   props: {
-    id: {
+      id: {
       type: [Number, String],
       required: true,
     },
+    categories: Array, // Assuming an array of categories is passed as a prop
   },
+  components: {
+    CategoryTree: {
+      props: ['categories'],
+      template: `
+        <ul>
+          <li v-for="category in categories" :key="category.id">
+            {{ category.name }}
+            <ul>
+              <li v-for="product in category.products" :key="product.id">{{ product.name }}</li>
+            </ul>
+            <category-tree v-if="category.ChildCategories.length > 0" :categories="category.ChildCategories" />
+          </li>
+        </ul>
+      `,
+    },
+  },
+
   data() {
     return {
       category: {},
@@ -54,7 +87,7 @@ export default {
         .get("http://localhost:3002/api/categories/" + categoryId)
         .then((response) => {
           this.category = response.data;
-          console.log(this.category);
+          console.log("hiiiii",this.category);
         })
         .catch((error) => {
           console.error(error);
