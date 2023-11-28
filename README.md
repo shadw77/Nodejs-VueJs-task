@@ -53,6 +53,8 @@ npm install
 npm run migrate
 ```
 ### Run the Project
+
+```bash
 npm start
 cd client
 npm run serve
