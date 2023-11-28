@@ -11,7 +11,7 @@ The goal of this project is to build a dashboard with Vue.js on the front-end an
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Database Migration](#database-migration)
+- [Prisma Client](#prisma-client)
 - [Run the Project](#run-the-project)
 - [Deployment](#deployment)
 - [License](#license)
@@ -48,9 +48,10 @@ cd ..
 # Install dependencies
 npm install
 ```
-### Database Migration
+### Prisma Client
 ```bash
-npm run migrate
+# Add .env file in the root of your project and define DATABASE_URL, then run this command
+npx prisma generate
 ```
 ### Run the Project
 
@@ -58,5 +59,6 @@ npm run migrate
 npm start
 cd client
 npm run serve
+npm run build
 
 Visit http://localhost:8080 in your browser.
