@@ -4,7 +4,14 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc -w & nodemon dist/index.js"
+    "start": "tsc -w & nodemon dist/index.js",
+    "install-client": "cd client && npm install",
+    "install-back": "npm install",
+    "migrate": "npm run migrate",
+    "start-client": "cd client && npm run serve",
+    "build-client": "cd client && npm run build",
+    "build-back": "npm run build"
+
   },
   "keywords": [],
   "author": "",
