@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <MainLayout />
+    <TopLayout />
   </div>
 </template>
 
 <script>
-import MainLayout from './components/MainLayout.vue';
+import TopLayout from './components/TopLayout.vue';
 export default {
   components: {
-    MainLayout,
+    TopLayout,
   },
-};</script>
+};
+</script>
 

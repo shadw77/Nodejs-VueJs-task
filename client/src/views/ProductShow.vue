@@ -2,8 +2,8 @@
 
 <template id="app">
   <div>
-    <div class="container">
-      <h2>Product Details</h2>
+    <div class="container-fluid text-center">
+      <h2 class="fw-bold mb-5">Product Details</h2>
     </div>
   </div>
   <div class="container">

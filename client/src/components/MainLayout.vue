@@ -81,8 +81,7 @@ export default {
 
 <style scoped>
 aside {
-  min-width: 220px;
-  max-width: 350px; /* Set a maximum width to avoid issues with longer content */
+width: 350px;
   background-color: #f0f0f0;
   padding: 20px;
 }

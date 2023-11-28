@@ -4,8 +4,8 @@
   <h2>All Products</h2>
 
   <div>
-    <div class="container">
-      <button @click="createProduct" class="btn btn-info">
+    <div class="container-fluid">
+      <button @click="createProduct()" class="btn btn-info">
         Create Product
       </button>
       <table class="table bg-white rounded shadow-sm table-hover">
@@ -83,9 +83,15 @@ export default {
           console.error(error);
         });
     },
+  
     showProduct(productId) {
       this.$router.push({ name: "show", params: { id: productId } });
       console.log(`Show product with ID: ${productId}`);
+    },
+    createProduct(){
+      this.$router.push({ name: "create" });
+      console.log(`Create Product`);
+
     },
     editProduct(productId) {
       this.$router.push({ name: "edit", params: { id: productId } });
@@ -95,6 +101,7 @@ export default {
       // Implement logic to delete the product with the given productId
       console.log(`Delete product with ID: ${productId}`);
     },
+    
   },
 };
 </script>
@@ -102,5 +109,6 @@ export default {
 <style>
 #app {
   font-family: "lato", sans-serif;
+  margin-top:200px;
 }
 </style>

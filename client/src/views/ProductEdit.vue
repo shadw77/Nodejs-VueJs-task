@@ -2,12 +2,13 @@
 
 <template>
   <div>
-    <div class="container">
-      <h2>Edit Product</h2>
-
+    <div class="container-fluid w-75">
+      <div class="container-fluid w-75 text-center">
+        <h2 class="fw-bold mb-5">Edit Product</h2>
+      </div>
       <div>
         <div>
-          <form @submit.prevent="updateProduct">
+          <form @submit.prevent="updateProduct" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
               <input
@@ -65,25 +66,27 @@ export default {
     const productId = this.$route.params.id;
 
     // Fetch the product details using the id
-    axios.get(`http://localhost:3002/api/products/${productId}`)
-      .then(response => {
+    axios
+      .get(`http://localhost:3002/api/products/${productId}`)
+      .then((response) => {
         this.product = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   },
   methods: {
     updateProduct() {
-    const formData = new FormData();
-    formData.append('name', this.product.name);
-    formData.append('category_id', this.product.category_id);
-    formData.append('picture', this.picture);
-      axios.put(`http://localhost:3002/api/products/${this.product.id}`, formData)
-        .then(response => {
+      const formData = new FormData();
+      formData.append("name", this.product.name);
+      formData.append("category_id", this.product.category_id);
+      formData.append("picture", this.picture);
+      axios
+        .put(`http://localhost:3002/api/products/${this.product.id}`, formData)
+        .then((response) => {
           console.log(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
@@ -92,7 +95,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped>
