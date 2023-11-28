@@ -1,5 +1,4 @@
-# Nodejs-VueJs-task
-# Project Name
+# Dashboard
 
 Admin dashboard for managing products and categories
 
@@ -49,10 +48,10 @@ cd ..
 # Install dependencies
 npm install
 
-# Database Migration
+## Database Migration
 npm run migrate
 
-#Run the Project
+## Run the Project
 npm start
 cd client
 npm run serve
