@@ -27,9 +27,8 @@ async function categoryRoutes(server: FastifyInstance) {
           type: "object",
           properties: {
             name: { type: "string" },
-            parent_id: { type: "number" },
           },
-          required: ["name", "parent_id"],
+          required: ["name"],
         },
         response: {
           201: $ref("categoryResponseSchema"),

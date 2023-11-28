@@ -38,7 +38,7 @@ export async function createCategory(
   const category = await prisma.category.create({
     data: {
       name: input.name,
-      parent_id: input.parent_id,
+      parent_id: (typeof input.parent_id === "number" || input.parent_id === null) ? input.parent_id : (input.parent_id !== undefined ? parseInt(input.parent_id) : undefined),      
       picture: filePath,
     },
   });

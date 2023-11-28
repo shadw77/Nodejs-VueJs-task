@@ -10,7 +10,7 @@ const categoryInput = {
     invalid_type_error: "Name must be a string",
   }),
   picture: z.string(),
-  parent_id: z.number()
+  parent_id:z.optional( z.number()),
 };
 
 const categoryGenerated = {
@@ -30,6 +30,7 @@ const productSchema = z.object({
 const childCategorySchema = z.object({
   id: z.number(),
   name: z.string(),
+  parent_id:z.optional( z.number()),
 });
 const createCategorySchema = z.object({
   ...categoryInput,
