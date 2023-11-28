@@ -9,52 +9,41 @@ import {
   deleteProduct,
 } from "./product.service";
 import multer from "fastify-multer";
+import sharp from "sharp";
+import fs from "fs/promises";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-// export async function createProductHandler(
-//   request: FastifyRequest<{
-//     Body: createProductInput;
-//   }>,
-//   reply: FastifyReply
-// ) {
-//   const product = await createProduct({
-//     ...request.body,
-//   });
-//   return product;
-// }
+
+// Define the request interface with the updated file property
 interface CustomFastifyRequest extends FastifyRequest {
-  file: () => Promise<{ file: Buffer; filename: string }>;
+  file: { buffer: Buffer; name: string };
 }
-export async function createProductHandler(
-  // request: CustomFastifyRequest, 
-  // reply: FastifyReply,input:createProductInput) {
-  // const data = request.body as createProductInput;
-      // Create the product with the updated 'data' object
-      // const product = await createProduct(
-      //     data
-      // );
-      request: FastifyRequest<{
-        Body: createProductInput;
-      }>,
-      reply: FastifyReply
-    ) {
-      const picture = request.raw; 
-      const product = await createProduct({
-        ...request.body,
-      });
 
-      return product;
-      // try {
-      //   const product = await createProduct(request, reply, data);
-    
-      //   // Send the response
-      //   reply.status(201).send(product);
-      // } catch (error) {
-      //   console.error('Error processing image:', error);
-      //   reply.status(500).send({ message: 'Internal Server Error' });
-      // }
-    }
+// Define the multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the folder where the images will be saved
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Use the original filename for the saved image
+  },
+});
+
+const upload = multer({ storage: storage });
+
+export async function createProductHandler(
+  request: FastifyRequest<{ Body: createProductInput }>,
+  reply: FastifyReply
+) {
+  const { file } = request as CustomFastifyRequest;
+
+  if (!file) {
+    reply.status(400).send({ message: "Image file is required" });
+    return;
+  }
+
+  const product = await createProduct(request.body, reply,file);
+  return product;
+}
 
 export async function getProductsHandler() {
   const products = await getProducts();
@@ -83,13 +72,6 @@ export async function updateProductHandler(
   reply: FastifyReply
 ) {
   const productId = Number(request.params.id);
-
-  // try {
-  //     request.zod.validate(request.body, "createProductSchema");
-  // } catch (error) {
-  //     reply.status(400).send(error);
-  //     return;
-  // }
 
   const product = await updateProduct(productId, request.body);
   reply.send(product);

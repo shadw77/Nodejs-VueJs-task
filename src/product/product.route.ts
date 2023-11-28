@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, RouteHandlerMethod } from "fastify";
 import {
   createProductHandler,
   getProductsHandler,
@@ -7,24 +7,54 @@ import {
   deleteProductHandler,
 } from "./product.controller";
 import { $ref } from "./product.schema";
-const multer = require('multer');
-const upload = multer({dest:'uploads'});
+import multer from "fastify-multer";
+  const upload = multer({ dest: "uploads/" });
+
+// const multer = require('multer');
+// const upload = multer({dest:'uploads'});
 async function productRoutes(server: FastifyInstance) {
 
   
+  // server.post(
+  //   "/",
+  //   {
+  //     preHandler: upload.single("picture"),
+  //     schema: {
+  //       body: $ref("createProductSchema"),
+  //       response: {
+  //         201: $ref("productResponseSchema"),
+  //       },
+  //     },
+  //   },
+  //   createProductHandler as RouteHandlerMethod
+  // );
   server.post(
-    "/", 
+    "/",
     {
+      preValidation: multer({
+        limits: {
+          // fileSize: 300 * 300,
+        },
+        storage: multer.memoryStorage(),
+      }).single("picture"), 
       schema: {
-        body: $ref("createProductSchema"),
+        consumes: ["multipart/form-data"],
+        body: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            category_id: { type: "number" },
+          },
+          required: ["name", "category_id"],
+        },
         response: {
           201: $ref("productResponseSchema"),
         },
       },
     },
-    createProductHandler
+    createProductHandler as RouteHandlerMethod
   );
-
+  
   server.get(
     "/",
     {

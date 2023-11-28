@@ -22,11 +22,7 @@
           <tr v-for="product in products" class="" :key="product.id">
             <th scope="row">{{ product.id }}</th>
             <td>{{ product.name }}</td>
-            <img
-              :src="`${product.picture}`"
-              class="col col-3"
-              alt="Product Image"
-            />
+<img   :src="`http://localhost:3002/${product.picture}`" alt="Product Image" class="col col-3" />
             <td>{{ product.category_id }}</td>
             <td>
               <button
@@ -98,10 +94,19 @@ export default {
       console.log(`Edit product with ID: ${productId}`);
     },
     deleteProduct(productId) {
-      // Implement logic to delete the product with the given productId
-      console.log(`Delete product with ID: ${productId}`);
-    },
-    
+      if (confirm("Are you sure you want to delete this product?")) {
+        axios
+          .delete(`http://localhost:3002/api/products/${productId}`)
+          .then((response) => {
+            console.log(response.data);
+            // After successful deletion, refresh the product list
+            this.fetchProducts();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    },    
   },
 };
 </script>
